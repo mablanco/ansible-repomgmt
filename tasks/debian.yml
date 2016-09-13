@@ -1,0 +1,52 @@
+---
+
+- name: echo test message
+  debug: msg="Installing repos for a {{ ansible_distribution }} {{ ansible_lsb.codename }} ({{ ansible_distribution_version }}) distro"
+
+- name: reset sources.list (oldies)
+  template:
+    src: "debian/sources.list.old.j2"
+    dest: "/etc/apt/sources.list"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_major_version|int < 7
+
+- name: reset sources.list (newest)
+  template:
+    src: "debian/sources.list.new.j2"
+    dest: "/etc/apt/sources.list"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_major_version|int >= 7   
+
+- name: install official debian repos keys
+  apt: name={{ item }} update_cache=yes force=yes state=present
+  with_items:
+    - debian-keyring
+    - debian-archive-keyring
+
+- name: add debian backports repo
+  template:
+    src: "debian/backports.list.j2"
+    dest: "/etc/apt/sources.list.d/backports.list"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_major_version|int >= 7
+
+- name: add debian multimedia repo
+  template:
+    src: "debian/multimedia.list.j2"
+    dest: "/etc/apt/sources.list.d/multimedia.list"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_major_version|int >= 7
+
+- name: install multimedia repo keys
+  apt: name={{ item }} update_cache=yes force=yes state=present
+  with_items:
+    - deb-multimedia-keyring
+  when: ansible_distribution_major_version|int >= 7

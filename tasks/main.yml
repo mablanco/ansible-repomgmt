@@ -1,0 +1,18 @@
+---
+# tasks file for mablanco.repomgmt
+
+- name: repos for Debian
+  include: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: repos for Ubuntu
+  include: ubuntu.yml
+  when: ansible_os_family == 'Ubuntu'
+
+- name: repos for RHEL
+  include: rhel.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: repos for CentOS
+  include: centos.yml
+  when: ansible_os_family == 'CentOS'
