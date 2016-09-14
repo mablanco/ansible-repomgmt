@@ -1,6 +1,6 @@
 ---
 
-- name: echo test message
+- name: echo info message
   debug: msg="Installing repos for a {{ ansible_distribution }} {{ ansible_lsb.codename }} ({{ ansible_distribution_version }}) distro"
 
 - name: reset sources.list (oldies)
@@ -28,25 +28,26 @@
     - debian-archive-keyring
 
 - name: add debian backports repo
-  template:
-    src: "debian/backports.list.j2"
+  copy:
+    content: "deb http://ftp.debian.org/debian/ {{ ansible_lsb.codename }}-backports main contrib non-free"
     dest: "/etc/apt/sources.list.d/backports.list"
     owner: root
     group: root
     mode: 0644
   when: ansible_distribution_major_version|int >= 7
 
-- name: add debian multimedia repo
-  template:
-    src: "debian/multimedia.list.j2"
-    dest: "/etc/apt/sources.list.d/multimedia.list"
-    owner: root
-    group: root
-    mode: 0644
-  when: ansible_distribution_major_version|int >= 7
+- name: Debian Multimedia repo
+  include: debian_multimedia.yml
+  when: debian_multimedia
 
-- name: install multimedia repo keys
-  apt: name={{ item }} update_cache=yes force=yes state=present
-  with_items:
-    - deb-multimedia-keyring
-  when: ansible_distribution_major_version|int >= 7
+- name: Dotdeb repo
+  include: debian_dotdeb.yml
+  when: debian_dotdeb
+
+- name: Nginx repo
+  include: debian_nginx.yml
+  when: debian_nginx
+
+- name: MariaDB repo
+  include: debian_mariadb.yml
+  when: debian_mariadb

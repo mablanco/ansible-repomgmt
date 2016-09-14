@@ -1,2 +1,8 @@
 ---
 # defaults file for mablanco.repomgmt
+
+# Debian extras
+debian_multimedia: false
+debian_dotdeb: false
+debian_nginx: false
+debian_mariadb: false
