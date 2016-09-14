@@ -1,6 +1,9 @@
 ---
 # tasks file for mablanco.repomgmt
 
+- name: echo info message
+  debug: msg="Installing repos for a {{ ansible_distribution }} {{ ansible_lsb.codename }} ({{ ansible_distribution_version }}) distro"
+
 - name: repos for Debian
   include: debian.yml
   when: ansible_os_family == 'Debian'

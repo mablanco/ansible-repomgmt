@@ -1,0 +1,28 @@
+---
+
+- name: reset sources.list
+  template:
+    src: "ubuntu/sources.list.j2"
+    dest: "/etc/apt/sources.list"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install official ubuntu repos keys
+  apt: name=ubuntu-keyring update_cache=yes force=yes state=latest
+
+- name: Universe repo
+  include: ubuntu_universe.yml
+  when: ubuntu_universe
+
+- name: Multiverse repo
+  include: ubuntu_multiverse.yml
+  when: ubuntu_multiverse
+
+- name: Backports repo
+  include: ubuntu_backports.yml
+  when: ubuntu_backports
+
+- name: Partners repo
+  include: ubuntu_partners.yml
+  when: ubuntu_partners

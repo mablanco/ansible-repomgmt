@@ -1,0 +1,9 @@
+---
+
+- name: add ubuntu multiverse repo
+  template:
+    src: "ubuntu/multiverse.list.j2"
+    dest: "/etc/apt/sources.list.d/ubuntu-multiverse.list"
+    owner: root
+    group: root
+    mode: 0644

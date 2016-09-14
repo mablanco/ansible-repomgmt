@@ -1,0 +1,9 @@
+---
+
+- name: add ubuntu backports repo
+  copy:
+    content: "deb http://archive.ubuntu.com/ubuntu {{ ansible_lsb.codename }}-backports main restricted universe multiverse"
+    dest: "/etc/apt/sources.list.d/ubuntu-backports.list"
+    owner: root
+    group: root
+    mode: 0644

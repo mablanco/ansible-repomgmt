@@ -1,8 +1,5 @@
 ---
 
-- name: echo info message
-  debug: msg="Installing repos for a {{ ansible_distribution }} {{ ansible_lsb.codename }} ({{ ansible_distribution_version }}) distro"
-
 - name: reset sources.list (oldies)
   template:
     src: "debian/sources.list.old.j2"
