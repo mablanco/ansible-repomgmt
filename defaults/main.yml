@@ -6,3 +6,9 @@ debian_multimedia: false
 debian_dotdeb: false
 debian_nginx: false
 debian_mariadb: false
+
+# Ubuntu extras
+ubuntu_universe: false
+ubuntu_multiverse: false
+ubuntu_backports: false
+ubuntu_partners: false

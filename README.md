@@ -14,6 +14,12 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **debian_nginx**
 - **debian_dotdeb**
 
+####Ubuntu extra repos
+- **ubuntu_universe**
+- **ubuntu_multiverse**
+- **ubuntu_backports**
+- **ubuntu_partners**
+
 Example Playbook
 -
 
