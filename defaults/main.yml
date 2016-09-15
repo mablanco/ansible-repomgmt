@@ -12,3 +12,5 @@ ubuntu_universe: false
 ubuntu_multiverse: false
 ubuntu_backports: false
 ubuntu_partners: false
+ubuntu_nginx: false
+ubuntu_mariadb: false

@@ -10,15 +10,17 @@ The following variables control whether an extra repo is installed (*true*) or n
 
 ####Debian extra repos
 - **debian_multimedia**
-- **debian_mariadb**
-- **debian_nginx**
 - **debian_dotdeb**
+- **debian_nginx**
+- **debian_mariadb**
 
 ####Ubuntu extra repos
 - **ubuntu_universe**
 - **ubuntu_multiverse**
 - **ubuntu_backports**
 - **ubuntu_partners**
+- **ubuntu_nginx**
+- **ubuntu_mariadb**
 
 Example Playbook
 -

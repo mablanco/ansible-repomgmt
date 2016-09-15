@@ -26,3 +26,11 @@
 - name: Partners repo
   include: ubuntu_partners.yml
   when: ubuntu_partners
+
+- name: Nginx repo
+  include: ubuntu_nginx.yml
+  when: ubuntu_nginx
+
+- name: MariaDB repo
+  include: ubuntu_mariadb.yml
+  when: ubuntu_mariadb
