@@ -1,0 +1,27 @@
+---
+
+- name: install mariadb old repo key
+  apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
+  when: ansible_lsb.codename in [ "precise", "trusty" ]
+  
+- name: install mariadb new repo key
+  apt_key: keyserver=keyserver.ubuntu.com id=0xF1656F24C74CD1D8
+  when: ansible_lsb.codename in [ "xenial" ]
+
+- name: add mariadb 5.5 repo
+  copy:
+    content: "deb http://mirror.netcologne.de/mariadb/repo/5.5/ubuntu {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb55.list"
+  when: ansible_lsb.codename in [ "precise", "trusty" ]
+
+- name: add mariadb 10.0 repo
+  copy:
+    content: "deb http://mirror.netcologne.de/mariadb/repo/10.0/ubuntu {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb100.list"
+  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]
+
+- name: add mariadb 10.1 repo
+  copy:
+    content: "deb http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb101.list"
+  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]

@@ -1,0 +1,14 @@
+---
+
+- name: add nginx repo key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]
+
+- name: add nginx repo
+  copy:
+    content: "deb http://nginx.org/packages/ubuntu/ {{ ansible_lsb.codename }} nginx"
+    dest: "/etc/apt/sources.list.d/nginx.list"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]
