@@ -36,7 +36,6 @@ Example of how to use this role:
 
 TODO
 -
-- Ubuntu repos
 - RHEL repos
 - CentOS repos
 
@@ -48,4 +47,4 @@ GPLv3
 Author Information
 -
 
-Marco Antonio Blanco <mablanco@correolibre.eu>
+Marco Antonio Blanco
