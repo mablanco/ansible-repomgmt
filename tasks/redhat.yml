@@ -7,3 +7,11 @@
 - name: Remi repo
   yum: name="http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm" state=present
   when: rhel_remi and rhel_epel
+
+- name: RPM Fusion repo (free)
+  yum: name="https://download1.rpmfusion.org/free/el/updates/{{ ansible_distribution_major_version }}/i386/rpmfusion-free-release-{{ ansible_distribution_major_version }}-1.noarch.rpm" state=present
+  when: rhel_rpmfusion and ansible_distribution_major_version|int < 7
+
+- name: RPM Fusion repo (non-free)
+  yum: name="https://download1.rpmfusion.org/free/el/updates/{{ ansible_distribution_major_version }}/i386/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-1.noarch.rpm" state=present
+  when: rhel_rpmfusion and ansible_distribution_major_version|int < 7

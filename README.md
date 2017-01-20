@@ -25,6 +25,7 @@ The following variables control whether an extra repo is installed (*true*) or n
 ####RHEL/CentOS extra repos
 - **rhel_epel**
 - **rhel_remi**
+- **rhel_rpmfusion**
 
 Example Playbook
 -
