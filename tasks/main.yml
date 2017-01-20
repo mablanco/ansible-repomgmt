@@ -6,16 +6,20 @@
 
 - name: repos for Debian
   include: debian.yml
-  when: ansible_os_family == 'Debian'
+  when: ansible_distribution == 'Debian'
 
 - name: repos for Ubuntu
   include: ubuntu.yml
-  when: ansible_os_family == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu'
 
 - name: repos for RHEL
   include: rhel.yml
-  when: ansible_os_family == 'RedHat'
+  when: ansible_distribution == 'RedHat'
 
 - name: repos for CentOS
   include: centos.yml
-  when: ansible_os_family == 'CentOS'
+  when: ansible_distribution == 'CentOS'
+
+- name: repos for CentOS
+  include: fedora.yml
+  when: ansible_distribution == 'Fedora'
