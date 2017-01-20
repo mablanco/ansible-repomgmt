@@ -1,0 +1,9 @@
+---
+
+- name: EPEL repo
+  yum: name="https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
+  when: rhel_epel
+  
+- name: Remi repo
+  yum: name="http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm" state=present
+  when: rhel_remi and rhel_epel

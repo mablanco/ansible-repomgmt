@@ -2,24 +2,24 @@
 # tasks file for mablanco.repomgmt
 
 - name: echo info message
-  debug: msg="Installing repos for a {{ ansible_distribution }} {{ ansible_lsb.codename }} ({{ ansible_distribution_version }}) distro"
+  debug: msg="Installing repos for a {{ ansible_distribution }} ({{ ansible_distribution_version }}) distro"
 
 - name: repos for Debian
   include: debian.yml
-  when: ansible_distribution == 'Debian'
+  when: ansible_distribution == "Debian"
 
 - name: repos for Ubuntu
   include: ubuntu.yml
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == "Ubuntu"
 
 - name: repos for RedHat family
   include: redhat.yml
-  when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora'
+  when: ansible_os_family == "RedHat" and ansible_distribution != "Fedora" and ansible_distribution_major_version|int >= 5
 
 - name: repos for Fedora
   include: fedora.yml
-  when: ansible_distribution == 'Fedora'
+  when: ansible_distribution == "Fedora"
 
 - name: repos for SLES
   include: sles.yml
-  when: ansible_distribution == 'SLES'
+  when: ansible_distribution == "SLES"

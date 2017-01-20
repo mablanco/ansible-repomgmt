@@ -22,6 +22,10 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **ubuntu_nginx**
 - **ubuntu_mariadb**
 
+####RHEL/CentOS extra repos
+- **rhel_epel**
+- **rhel_remi**
+
 Example Playbook
 -
 
@@ -33,11 +37,6 @@ Example of how to use this role:
          debian_dotdeb: true
       roles:
          - { role: mablanco.repomgmt }
-
-TODO
--
-- RHEL repos
-- CentOS repos
 
 License
 -
