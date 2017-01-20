@@ -10,7 +10,7 @@
   when: ansible_distribution_major_version|int >= 7
 
 - name: install multimedia repo keys
-  apt: name={{ item }} update_cache=yes force=yes state=present
+  apt: name={{ item }} update_cache=yes state=present
   with_items:
     - deb-multimedia-keyring
   when: ansible_distribution_major_version|int >= 7

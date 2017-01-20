@@ -19,7 +19,7 @@
   when: ansible_distribution_major_version|int >= 7   
 
 - name: install official debian repos keys
-  apt: name={{ item }} update_cache=yes force=yes state=latest
+  apt: name={{ item }} update_cache=yes state=latest
   with_items:
     - debian-keyring
     - debian-archive-keyring

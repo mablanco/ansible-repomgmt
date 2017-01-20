@@ -9,7 +9,7 @@
     mode: 0644
 
 - name: install official ubuntu repos keys
-  apt: name=ubuntu-keyring update_cache=yes force=yes state=latest
+  apt: name=ubuntu-keyring update_cache=yes state=latest
 
 - name: Universe repo
   include: ubuntu_universe.yml
