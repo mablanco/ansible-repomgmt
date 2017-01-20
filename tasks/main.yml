@@ -12,13 +12,9 @@
   include: ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
 
-- name: repos for RHEL
-  include: rhel.yml
-  when: ansible_distribution == 'RedHat'
-
-- name: repos for CentOS
-  include: centos.yml
-  when: ansible_distribution == 'CentOS'
+- name: repos for RedHat family
+  include: redhat.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora'
 
 - name: repos for Fedora
   include: fedora.yml
