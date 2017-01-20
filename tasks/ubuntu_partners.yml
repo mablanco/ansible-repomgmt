@@ -2,7 +2,7 @@
 
 - name: add ubuntu partner repo
   copy:
-    content: "deb http://archive.ubuntu.com/ubuntu {{ ansible_lsb.codename }} partner"
+    content: "deb http://archive.canonical.com/ubuntu {{ ansible_lsb.codename }} partner"
     dest: "/etc/apt/sources.list.d/ubuntu-partners.list"
     owner: root
     group: root
