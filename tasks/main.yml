@@ -20,6 +20,10 @@
   include: centos.yml
   when: ansible_distribution == 'CentOS'
 
-- name: repos for CentOS
+- name: repos for Fedora
   include: fedora.yml
   when: ansible_distribution == 'Fedora'
+
+- name: repos for SLES
+  include: sles.yml
+  when: ansible_distribution == 'SLES'
