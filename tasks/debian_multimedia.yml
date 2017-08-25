@@ -1,6 +1,6 @@
 ---
 
-- name: add debian multimedia repo
+- name: Debian | add multimedia repo
   template:
     src: "debian/multimedia.list.j2"
     dest: "/etc/apt/sources.list.d/multimedia.list"
@@ -9,8 +9,11 @@
     mode: 0644
   when: ansible_distribution_major_version|int >= 7
 
-- name: install multimedia repo keys
-  apt: name={{ item }} update_cache=yes state=present
+- name: Debian | update multimedia repo cache
+  apt: update_cache=yes
+
+- name: Debian | install multimedia repo keys
+  apt: name={{ item }} allow_unauthenticated=yes state=present
   with_items:
     - deb-multimedia-keyring
   when: ansible_distribution_major_version|int >= 7

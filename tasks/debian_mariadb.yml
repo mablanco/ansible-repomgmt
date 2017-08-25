@@ -1,23 +1,36 @@
 ---
 
-- name: install mariadb repo key
+- name: Debian | install mariadb repo key
   apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
   when: ansible_lsb.codename in [ "wheezy", "jessie" ]
 
-- name: add mariadb 5.5 repo
+- name: Debian | install mariadb repo key (debian 9)
+  apt_key: keyserver=keyserver.ubuntu.com id=0xF1656F24C74CD1D8
+  when: ansible_lsb.codename in [ "stretch" ]
+
+- name: Debian | add mariadb 5.5 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/5.5/debian {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb55.list"
   when: ansible_lsb.codename in [ "wheezy" ]
 
-- name: add mariadb 10.0 repo
+- name: Debian | add mariadb 10.0 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.0/debian {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb100.list"
   when: ansible_lsb.codename in [ "wheezy", "jessie" ]
 
-- name: add mariadb 10.1 repo
+- name: Debian | add mariadb 10.1 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.1/debian {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb101.list"
-  when: ansible_lsb.codename in [ "wheezy", "jessie" ]
+  when: ansible_distribution_major_version|int >= 7
+
+- name: Debian | add mariadb 10.2 repo
+  copy:
+    content: "deb http://mirror.netcologne.de/mariadb/repo/10.2/debian {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb102.list"
+  when: ansible_distribution_major_version|int >= 7
+
+- name: Debian | update mariadb repo cache
+  apt: update_cache=yes

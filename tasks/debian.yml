@@ -1,6 +1,6 @@
 ---
 
-- name: reset sources.list (oldies)
+- name: Debian | reset sources.list (oldies)
   template:
     src: "debian/sources.list.old.j2"
     dest: "/etc/apt/sources.list"
@@ -9,22 +9,22 @@
     mode: 0644
   when: ansible_distribution_major_version|int < 7
 
-- name: reset sources.list (newest)
+- name: Debian | reset sources.list (newest)
   template:
     src: "debian/sources.list.new.j2"
     dest: "/etc/apt/sources.list"
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_major_version|int >= 7   
+  when: ansible_distribution_major_version|int >= 7
 
-- name: install official debian repos keys
+- name: Debian | install official repos keys
   apt: name={{ item }} update_cache=yes state=latest
   with_items:
     - debian-keyring
     - debian-archive-keyring
 
-- name: add debian backports repo
+- name: Debian | add backports repo
   copy:
     content: "deb http://ftp.debian.org/debian/ {{ ansible_lsb.codename }}-backports main contrib non-free"
     dest: "/etc/apt/sources.list.d/backports.list"
@@ -33,18 +33,18 @@
     mode: 0644
   when: ansible_distribution_major_version|int >= 7
 
-- name: Debian Multimedia repo
+- name: Debian | Multimedia repo
   include: debian_multimedia.yml
   when: debian_multimedia
 
-- name: Dotdeb repo
+- name: Debian | Dotdeb repo
   include: debian_dotdeb.yml
   when: debian_dotdeb
 
-- name: Nginx repo
+- name: Debian | Nginx repo
   include: debian_nginx.yml
   when: debian_nginx
 
-- name: MariaDB repo
+- name: Debian | MariaDB repo
   include: debian_mariadb.yml
   when: debian_mariadb
