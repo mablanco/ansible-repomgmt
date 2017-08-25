@@ -1,6 +1,6 @@
 ---
 
-- name: Debian | reset sources.list (oldies)
+- name: Debian | reset sources.list (<v7)
   template:
     src: "debian/sources.list.old.j2"
     dest: "/etc/apt/sources.list"
@@ -9,7 +9,7 @@
     mode: 0644
   when: ansible_distribution_major_version|int < 7
 
-- name: Debian | reset sources.list (newest)
+- name: Debian | reset sources.list (>=v7)
   template:
     src: "debian/sources.list.new.j2"
     dest: "/etc/apt/sources.list"
@@ -39,12 +39,12 @@
 
 - name: Debian | Dotdeb repo
   include: debian_dotdeb.yml
-  when: debian_dotdeb
+  when: debian_dotdeb and ansible_distribution_major_version|int >= 7
 
 - name: Debian | Nginx repo
   include: debian_nginx.yml
-  when: debian_nginx
+  when: debian_nginx and ansible_distribution_major_version|int >= 7
 
 - name: Debian | MariaDB repo
   include: debian_mariadb.yml
-  when: debian_mariadb
+  when: debian_mariadb and ansible_distribution_major_version|int >= 7

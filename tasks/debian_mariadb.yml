@@ -24,13 +24,11 @@
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.1/debian {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb101.list"
-  when: ansible_distribution_major_version|int >= 7
 
 - name: Debian | add mariadb 10.2 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.2/debian {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb102.list"
-  when: ansible_distribution_major_version|int >= 7
 
 - name: Debian | update mariadb repo cache
   apt: update_cache=yes
