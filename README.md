@@ -1,5 +1,4 @@
 # mablanco.repomgmt
----
 
 Ansible role to manage the software repositories of a Linux system of the following flavours: Debian, Ubuntu, RHEL, CentOS and SuSE. It sanitizes the base repos and adds several well-known extra repos if required by the user through a set of variables.
 
