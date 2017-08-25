@@ -18,10 +18,14 @@
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.0/ubuntu {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb100.list"
-  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]
 
 - name: Ubuntu | add mariadb 10.1 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb101.list"
-  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]
+
+- name: Ubuntu | add mariadb 10.2 repo
+  copy:
+    content: "deb http://mirror.netcologne.de/mariadb/repo/10.2/ubuntu {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb102.list"
+  when: ansible_lsb.codename in [ "trusty", "xenial" ]
