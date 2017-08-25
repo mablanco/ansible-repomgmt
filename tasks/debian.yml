@@ -35,7 +35,7 @@
 
 - name: Debian | Multimedia repo
   include: debian_multimedia.yml
-  when: debian_multimedia
+  when: debian_multimedia and ansible_distribution_major_version|int >= 7
 
 - name: Debian | Dotdeb repo
   include: debian_dotdeb.yml

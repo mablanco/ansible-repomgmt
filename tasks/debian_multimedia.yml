@@ -1,5 +1,8 @@
 ---
 
+- name: Debian | install multimedia repo key
+  apt_key: keyserver=keyserver.ubuntu.com id=5C808C2B65558117
+
 - name: Debian | add multimedia repo
   template:
     src: "debian/multimedia.list.j2"
@@ -7,13 +10,9 @@
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_major_version|int >= 7
 
 - name: Debian | update multimedia repo cache
-  apt: update_cache=yes
+  apt: update_cache=yes force=yes
 
-- name: Debian | install multimedia repo keys
-  apt: name={{ item }} allow_unauthenticated=yes state=present
-  with_items:
-    - deb-multimedia-keyring
-  when: ansible_distribution_major_version|int >= 7
+- name: Debian | install multimedia repo keys package
+  apt: name=deb-multimedia-keyring state=present
