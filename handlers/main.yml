@@ -3,3 +3,6 @@
 
 - name: Debian | update package cache
   apt: update_cache=yes
+
+- name: Ubuntu | update package cache
+  apt: update_cache=yes

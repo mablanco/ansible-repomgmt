@@ -1,9 +1,11 @@
 ---
 
-- name: Ubuntu | add ubuntu multiverse repo
+- name: Ubuntu | add multiverse repo
   template:
     src: "ubuntu/multiverse.list.j2"
     dest: "/etc/apt/sources.list.d/ubuntu-multiverse.list"
     owner: root
     group: root
     mode: 0644
+  notify:
+  - Ubuntu | update package cache

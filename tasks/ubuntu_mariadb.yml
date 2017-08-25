@@ -13,19 +13,27 @@
     content: "deb http://mirror.netcologne.de/mariadb/repo/5.5/ubuntu {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb55.list"
   when: ansible_lsb.codename in [ "precise", "trusty" ]
+  notify:
+  - Ubuntu | update package cache
 
 - name: Ubuntu | add mariadb 10.0 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.0/ubuntu {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb100.list"
+  notify:
+  - Ubuntu | update package cache
 
 - name: Ubuntu | add mariadb 10.1 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.1/ubuntu {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb101.list"
+  notify:
+  - Ubuntu | update package cache
 
 - name: Ubuntu | add mariadb 10.2 repo
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.2/ubuntu {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb102.list"
   when: ansible_lsb.codename in [ "trusty", "xenial" ]
+  notify:
+  - Ubuntu | update package cache

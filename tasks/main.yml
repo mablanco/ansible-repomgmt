@@ -10,7 +10,7 @@
 
 - name: repos for Ubuntu
   include: ubuntu.yml
-  when: ansible_distribution == "Ubuntu"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 12
 
 - name: repos for RedHat family
   include: redhat.yml

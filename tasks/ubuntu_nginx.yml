@@ -2,7 +2,6 @@
 
 - name: Ubuntu | add nginx repo key
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
-  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]
 
 - name: Ubuntu | add nginx repo
   copy:
@@ -11,4 +10,5 @@
     owner: root
     group: root
     mode: 0644
-  when: ansible_lsb.codename in [ "precise", "trusty", "xenial" ]
+  notify:
+  - Ubuntu | update package cache

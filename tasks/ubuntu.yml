@@ -7,9 +7,13 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+  - Ubuntu | update package cache
 
-- name: Ubuntu | install official ubuntu repos keys
+- name: Ubuntu | install official repos keys
   apt: name=ubuntu-keyring update_cache=yes state=latest
+  notify:
+  - Ubuntu | update package cache
 
 - name: Ubuntu | Universe repo
   include: ubuntu_universe.yml

@@ -1,9 +1,11 @@
 ---
 
-- name: Ubuntu | add ubuntu universe repo
+- name: Ubuntu | add universe repo
   template:
     src: "ubuntu/universe.list.j2"
     dest: "/etc/apt/sources.list.d/ubuntu-universe.list"
     owner: root
     group: root
     mode: 0644
+  notify:
+  - Ubuntu | update package cache
