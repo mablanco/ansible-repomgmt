@@ -1,6 +1,6 @@
 ---
 
-- name: reset sources.list
+- name: Ubuntu | reset sources.list
   template:
     src: "ubuntu/sources.list.j2"
     dest: "/etc/apt/sources.list"
@@ -8,29 +8,29 @@
     group: root
     mode: 0644
 
-- name: install official ubuntu repos keys
+- name: Ubuntu | install official ubuntu repos keys
   apt: name=ubuntu-keyring update_cache=yes state=latest
 
-- name: Universe repo
+- name: Ubuntu | Universe repo
   include: ubuntu_universe.yml
   when: ubuntu_universe
 
-- name: Multiverse repo
+- name: Ubuntu | Multiverse repo
   include: ubuntu_multiverse.yml
   when: ubuntu_multiverse
 
-- name: Backports repo
+- name: Ubuntu | Backports repo
   include: ubuntu_backports.yml
   when: ubuntu_backports
 
-- name: Partners repo
+- name: Ubuntu | Partners repo
   include: ubuntu_partners.yml
   when: ubuntu_partners
 
-- name: Nginx repo
+- name: Ubuntu | Nginx repo
   include: ubuntu_nginx.yml
   when: ubuntu_nginx
 
-- name: MariaDB repo
+- name: Ubuntu | MariaDB repo
   include: ubuntu_mariadb.yml
   when: ubuntu_mariadb
