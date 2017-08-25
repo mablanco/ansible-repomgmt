@@ -10,6 +10,5 @@
     owner: root
     group: root
     mode: 0644
-
-- name: Debian | update nginx repo cache
-  apt: update_cache=yes
+  notify:
+  - Debian | update package cache

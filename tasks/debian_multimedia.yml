@@ -10,9 +10,8 @@
     owner: root
     group: root
     mode: 0644
-
-- name: Debian | update multimedia repo cache
-  apt: update_cache=yes force=yes
+  notify:
+  - Debian | update package cache
 
 - name: Debian | install multimedia repo keys package
-  apt: name=deb-multimedia-keyring state=present
+  apt: name=deb-multimedia-keyring update_cache=yes state=latest

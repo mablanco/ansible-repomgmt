@@ -8,6 +8,8 @@
     group: root
     mode: 0644
   when: ansible_distribution_major_version|int < 7
+  notify:
+  - Debian | update package cache
 
 - name: Debian | reset sources.list (>=v7)
   template:
@@ -17,12 +19,16 @@
     group: root
     mode: 0644
   when: ansible_distribution_major_version|int >= 7
+  notify:
+  - Debian | update package cache
 
 - name: Debian | install official repos keys
   apt: name={{ item }} update_cache=yes state=latest
   with_items:
     - debian-keyring
     - debian-archive-keyring
+  notify:
+  - Debian | update package cache
 
 - name: Debian | add backports repo
   copy:
@@ -32,6 +38,8 @@
     group: root
     mode: 0644
   when: ansible_distribution_major_version|int >= 7
+  notify:
+  - Debian | update package cache
 
 - name: Debian | Multimedia repo
   include: debian_multimedia.yml

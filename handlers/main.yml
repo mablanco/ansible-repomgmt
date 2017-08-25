@@ -1,2 +1,5 @@
 ---
 # handlers file for mablanco.repomgmt
+
+- name: Debian | update package cache
+  apt: update_cache=yes
