@@ -1,20 +1,20 @@
-mablanco.repomgmt
-=
+# mablanco.repomgmt
+---
 
-Ansible role to manage the software repositories of a Linux system of the following flavours: Debian, Ubuntu, RHEL and CentOS. It sanitizes the base repos and adds several well-known extra repos, if required by the user through a set of variables.
+Ansible role to manage the software repositories of a Linux system of the following flavours: Debian, Ubuntu, RHEL, CentOS and SuSE. It sanitizes the base repos and adds several well-known extra repos if required by the user through a set of variables.
 
-Role Variables
--
+## Role Variables
 
-The following variables control whether an extra repo is installed (*true*) or not (*false*). 
+### Extra repos
+The following variables control whether an extra repo is installed (*true*) or not (*false*).
 
-####Debian extra repos
+#### Debian
 - **debian_multimedia**
 - **debian_dotdeb**
 - **debian_nginx**
 - **debian_mariadb**
 
-####Ubuntu extra repos
+#### Ubuntu
 - **ubuntu_universe**
 - **ubuntu_multiverse**
 - **ubuntu_backports**
@@ -22,14 +22,16 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **ubuntu_nginx**
 - **ubuntu_mariadb**
 
-####RHEL/CentOS extra repos
+#### RHEL/CentOS
 - **rhel_epel**
 - **rhel_remi**
 - **rhel_rpmfusion**
 - **rhel_nux**
 
-Example Playbook
--
+#### SuSE
+pending
+
+## Example Playbook
 
 Example of how to use this role:
 
@@ -40,12 +42,6 @@ Example of how to use this role:
       roles:
          - { role: mablanco.repomgmt }
 
-License
--
+## License
 
 GPLv3
-
-Author Information
--
-
-Marco Antonio Blanco
