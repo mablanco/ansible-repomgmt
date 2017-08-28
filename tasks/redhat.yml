@@ -1,35 +1,35 @@
 ---
 
-- name: EPEL repo
+- name: RedHat | add EPEL repo
   yum: name="https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
   when: rhel_epel
-  
-- name: REMI repo
+
+- name: RedHat | add REMI repo
   yum: name="http://rpms.famillecollet.com/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm" state=present
   when: rhel_remi and rhel_epel
 
-- name: enable REMI repo
+- name: RedHat | enable REMI repo
   lineinfile:
     name: /etc/yum.repos.d/remi.repo
     regexp: '^enabled='
     line: 'enabled=1'
 
-- name: RPM Fusion repo (free)
+- name: RedHat | add RPM Fusion repo (free)
   yum: name="https://download1.rpmfusion.org/free/el/updates/{{ ansible_distribution_major_version }}/i386/rpmfusion-free-release-{{ ansible_distribution_major_version }}-1.noarch.rpm" state=present
   when: rhel_rpmfusion and ansible_distribution_major_version|int < 7
 
-- name: RPM Fusion repo (non-free)
+- name: RedHat | add RPM Fusion repo (non-free)
   yum: name="https://download1.rpmfusion.org/free/el/updates/{{ ansible_distribution_major_version }}/i386/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}-1.noarch.rpm" state=present
   when: rhel_rpmfusion and ansible_distribution_major_version|int < 7
 
-- name: NUX Dextop repo key
+- name: RedHat | add NUX Dextop repo key
   rpm_key: key="http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro" state=present
   when: rhel_nux and ansible_distribution_major_version|int >= 6
-  
-- name: NUX Dextop repo (RHEL 6)
+
+- name: RedHat | add NUX Dextop repo (RHEL 6)
   yum: name="http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm" state=present
   when: rhel_nux and ansible_distribution_major_version|int == 6
 
-- name: NUX Dextop repo (RHEL 7)
+- name: RedHat | add NUX Dextop repo (RHEL 7)
   yum: name="http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm" state=present
   when: rhel_nux and ansible_distribution_major_version|int == 7
