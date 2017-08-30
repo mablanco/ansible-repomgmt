@@ -13,7 +13,7 @@
   when: ansible_distribution_major_version|int == 7
 
 - name: RedHat | add EPEL repo
-  yum: name="https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
+  yum: name="http://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
   when: rhel_epel or rhel_remi
 
 - name: RedHat | add REMI repo
@@ -28,11 +28,11 @@
   when: rhel_remi
 
 - name: RedHat | add RPM Fusion repo (free)
-  yum: name="https://download1.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm" disable_gpg_check=yes state=present
+  yum: name="http://download1.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm" disable_gpg_check=yes state=present
   when: rhel_rpmfusion
 
 - name: RedHat | add RPM Fusion repo (non-free)
-  yum: name="https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm" disable_gpg_check=yes state=present
+  yum: name="http://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm" disable_gpg_check=yes state=present
   when: rhel_rpmfusion
 
 - name: RedHat | add NUX Dextop repo key
