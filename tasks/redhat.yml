@@ -1,5 +1,17 @@
 ---
 
+- name: RedHat | enable CentOS-6 Plus repo
+  command: yum-config-manager --enable centosplus
+  when: ansible_distribution_major_version|int == 6
+
+- name: RedHat | enable CentOS-6 Contrib repo
+  command: yum-config-manager --enable contrib
+  when: ansible_distribution_major_version|int == 6
+
+- name: RedHat | enable CentOS-7 Plus repo
+  command: yum-config-manager --enable centosplus
+  when: ansible_distribution_major_version|int == 7
+
 - name: RedHat | add EPEL repo
   yum: name="https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
   when: rhel_epel or rhel_remi
