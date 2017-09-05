@@ -26,6 +26,7 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **rhel_remi**
 - **rhel_rpmfusion**
 - **rhel_nux**
+- **rhel_ius**
 
 #### SuSE
 pending

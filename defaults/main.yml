@@ -14,3 +14,10 @@ ubuntu_backports: false
 ubuntu_partners: false
 ubuntu_nginx: false
 ubuntu_mariadb: false
+
+# RedHat extras
+rhel_epel: false
+rhel_remi: false
+rhel_rpmfusion: false
+rhel_nux: false
+rhel_ius: false
