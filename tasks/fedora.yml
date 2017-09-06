@@ -5,7 +5,7 @@
   when: rhel_remi
 
 - name: Fedora | enable REMI repo
-  command: yum-config-manager --enable remi
+  command: dnf config-manager --set-enabled remi
   when: rhel_remi
 
 - name: Fedora | RPM Fusion repo (free)
