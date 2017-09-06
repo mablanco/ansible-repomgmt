@@ -1,19 +1,19 @@
 ---
 
-- name: REMI repo
+- name: Fedora | REMI repo
   dnf: name="http://rpms.famillecollet.com/fedora/remi-release-{{ ansible_distribution_major_version }}.rpm" state=present
   when: rhel_remi
-  
-- name: enable REMI repo
+
+- name: Fedora | enable REMI repo
   lineinfile:
     name: /etc/yum.repos.d/remi.repo
     regexp: '^enabled='
     line: 'enabled=1'
 
-- name: RPM Fusion repo (free)
+- name: Fedora | RPM Fusion repo (free)
   dnf: name="https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
   when: rhel_rpmfusion
 
-- name: RPM Fusion repo (non-free)
+- name: Fedora | RPM Fusion repo (non-free)
   dnf: name="https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
   when: rhel_rpmfusion
