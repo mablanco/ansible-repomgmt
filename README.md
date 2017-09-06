@@ -2,6 +2,8 @@
 
 Ansible role to manage the software repositories of a Linux system of the following flavours: Debian, Ubuntu, RHEL, CentOS and SuSE. It sanitizes the base repos and adds several well-known extra repos if required by the user through a set of variables.
 
+**Disclaimer:** As the extra repos are not official, install them at you own risk. This role is not explicitly recommending their use, it's just easing their installation in case you decide so.
+
 ## Role Variables
 
 ### Extra repos
@@ -21,7 +23,7 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **ubuntu_nginx**
 - **ubuntu_mariadb**
 
-#### RHEL/CentOS
+#### RHEL/CentOS/Fedora
 - **rhel_epel**
 - **rhel_remi**
 - **rhel_rpmfusion**
@@ -30,7 +32,7 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **rhel_ius**
 
 #### SuSE
-pending
+To be done
 
 ## Example Playbook
 
