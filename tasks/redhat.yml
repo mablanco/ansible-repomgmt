@@ -21,10 +21,7 @@
   when: rhel_remi
 
 - name: RedHat | enable REMI repo
-  lineinfile:
-    name: /etc/yum.repos.d/remi.repo
-    regexp: '^enabled='
-    line: 'enabled=1'
+  command: yum-config-manager --enable remi
   when: rhel_remi
 
 - name: RedHat | add RPM Fusion repo (free)
