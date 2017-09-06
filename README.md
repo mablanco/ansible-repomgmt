@@ -23,13 +23,17 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **ubuntu_nginx**
 - **ubuntu_mariadb**
 
-#### RHEL/CentOS/Fedora
+#### RHEL/CentOS
 - **rhel_epel**
 - **rhel_remi**
 - **rhel_rpmfusion**
 - **rhel_nux**
 - **rhel_nux_misc**
 - **rhel_ius**
+
+#### Fedora
+- **rhel_remi**
+- **rhel_rpmfusion**
 
 #### SuSE
 To be done

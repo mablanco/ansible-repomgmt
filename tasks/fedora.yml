@@ -5,10 +5,8 @@
   when: rhel_remi
 
 - name: Fedora | enable REMI repo
-  lineinfile:
-    name: /etc/yum.repos.d/remi.repo
-    regexp: '^enabled='
-    line: 'enabled=1'
+  command: yum-config-manager --enable remi
+  when: rhel_remi
 
 - name: Fedora | RPM Fusion repo (free)
   dnf: name="https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
