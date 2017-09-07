@@ -36,7 +36,7 @@ The following variables control whether an extra repo is installed (*true*) or n
 - **rhel_rpmfusion**
 
 #### SuSE
-To be done
+- **sles_packman**
 
 ## Example Playbook
 

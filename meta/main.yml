@@ -20,6 +20,9 @@ galaxy_info:
     versions:
     - 25
     - 26
+  - name: SLES
+    versions:
+  - all
 
   galaxy_tags:
     - packaging

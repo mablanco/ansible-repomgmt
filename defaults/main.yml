@@ -22,3 +22,6 @@ rhel_rpmfusion: false
 rhel_nux: false
 rhel_nux_misc: false
 rhel_ius: false
+
+# SLES extras
+sles_packman: false
