@@ -22,7 +22,7 @@ galaxy_info:
     - 26
   - name: SLES
     versions:
-  - all
+    - all
 
   galaxy_tags:
     - packaging
