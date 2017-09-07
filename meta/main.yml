@@ -9,11 +9,21 @@ galaxy_info:
     - all
   - name: Ubuntu
     versions:
-    - all
+    - trusty
+    - xenial
+    - zesty
+  - name: EL
+    versions:
+    - 6
+    - 7
+  - name: Fedora
+    versions:
+    - 25
+    - 26
 
   galaxy_tags:
     - packaging
-    - debian
-    - ubuntu
+    - linux
+    - system
 
 dependencies: []
