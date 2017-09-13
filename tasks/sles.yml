@@ -1,5 +1,5 @@
 ---
 
 - name: SLES | add Packman repo
-  zypper_repository: name=packman repo='http://ftp.gwdg.de/pub/linux/misc/packman/suse/SLE_{{ ansible_distribution_major_version }}/' state=present
+  zypper_repository: name=packman repo='http://ftp.gwdg.de/pub/linux/misc/packman/suse/SLE_{{ ansible_distribution_major_version }}/' state=present auto_import_keys=yes
   when: sles_packman
