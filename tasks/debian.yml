@@ -35,6 +35,12 @@
 - name: Debian | versions higher than 8
   block:
 
+  - name: Debian | install APT HTTPS support
+    apt:
+      name:
+      - apt-transport-https
+      state: present
+
   - name: Debian | reset sources.list (>v8)
     template:
       src: "debian/sources.list.current.j2"
