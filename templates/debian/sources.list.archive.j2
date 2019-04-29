@@ -1,5 +1,4 @@
-deb http://archive.debian.org/debian/ {{ ansible_lsb.codename }} main contrib non-free
-deb http://archive.debian.org/debian-volatile/ {{ ansible_lsb.codename }}/volatile main contrib non-free
-deb http://archive.debian.org/debian-security/ {{ ansible_lsb.codename }}/updates main contrib non-free
-deb http://archive.debian.org/debian-backports/ {{ ansible_lsb.codename }}-backports main contrib non-free
-deb http://archive.debian.org/debian-backports/ {{ ansible_lsb.codename }}-backports-sloppy main contrib non-free
+deb http://archive.debian.org/debian {{ ansible_lsb.codename }} main contrib non-free
+deb http://security.debian.org {{ ansible_lsb.codename }}/updates main contrib non-free
+deb [check-valid-until=no] http://archive.debian.org/debian {{ ansible_lsb.codename }}-backports main contrib non-free
+deb [check-valid-until=no] http://archive.debian.org/debian {{ ansible_lsb.codename }}-backports-sloppy main contrib non-free

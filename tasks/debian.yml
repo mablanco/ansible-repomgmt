@@ -1,5 +1,16 @@
 ---
 
+- name: Debian | disable validity checks (<=v8)
+  copy:
+    content: 'Acquire::Check-Valid-Until "false";'
+    dest: "/etc/apt/apt.conf.d/100disablechecks"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_major_version|int <= 8
+  notify:
+  - Debian | update package cache
+
 - name: Debian | reset sources.list (<=v8)
   template:
     src: "debian/sources.list.archive.j2"
