@@ -35,10 +35,12 @@
   - Debian | update package cache
 
 - name: Debian | install official repos keys
-  apt: name={{ item }} update_cache=yes state=latest
-  with_items:
+  apt:
+    name:
     - debian-keyring
     - debian-archive-keyring
+    update_cache: yes
+    state: present
   notify:
   - Debian | update package cache
 
