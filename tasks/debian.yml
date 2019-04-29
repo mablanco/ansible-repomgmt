@@ -1,24 +1,36 @@
 ---
 
-- name: Debian | reset sources.list (<v7)
+- name: Debian | reset sources.list (<v8)
   template:
-    src: "debian/sources.list.old.j2"
+    src: "debian/sources.list.archive.j2"
     dest: "/etc/apt/sources.list"
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_major_version|int < 7
+  when: ansible_distribution_major_version|int < 8
   notify:
   - Debian | update package cache
 
-- name: Debian | reset sources.list (>=v7)
+- name: Debian | reset sources.list (=v8)
   template:
-    src: "debian/sources.list.new.j2"
+    src: "debian/sources.list.jessie.j2"
     dest: "/etc/apt/sources.list"
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_major_version|int >= 7
+  when: ansible_distribution_major_version|int == 8
+  notify:
+  - Debian | update package cache
+
+
+- name: Debian | reset sources.list (>v8)
+  template:
+    src: "debian/sources.list.current.j2"
+    dest: "/etc/apt/sources.list"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_major_version|int > 8
   notify:
   - Debian | update package cache
 
@@ -30,14 +42,22 @@
   notify:
   - Debian | update package cache
 
-- name: Debian | add backports repo
+- name: Debian | add backports repo (>v8)
   copy:
     content: "deb http://ftp.debian.org/debian/ {{ ansible_lsb.codename }}-backports main contrib non-free"
     dest: "/etc/apt/sources.list.d/backports.list"
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_major_version|int >= 7
+  when: ansible_distribution_major_version|int > 8
+  notify:
+  - Debian | update package cache
+
+- name: Debian | remove backports repo (<=v8)
+  file:
+    path: "/etc/apt/sources.list.d/backports.list"
+    state: absent
+  when: ansible_distribution_major_version|int <= 8
   notify:
   - Debian | update package cache
 
