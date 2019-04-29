@@ -52,7 +52,8 @@
   command: yum-config-manager --enable nux-misc
   when: rhel_nux_misc
 
-- set_fact:
+- name: RedHat | set IUS fact
+  set_fact:
     ius_distribution_abbrev: "{{ (ansible_distribution == 'CentOS') | ternary('centos', 'rhel') }}"
 
 - name: RedHat | add IUS repo
