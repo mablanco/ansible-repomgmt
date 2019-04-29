@@ -12,9 +12,9 @@
 
 - name: Ubuntu | install official repos keys
   apt:
-      name: ubuntu-keyring
-      update_cache: yes
-      state: present
+    name: ubuntu-keyring
+    update_cache: yes
+    state: present
   notify:
   - Ubuntu | update package cache
 
