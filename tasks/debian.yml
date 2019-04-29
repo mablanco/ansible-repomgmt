@@ -1,27 +1,15 @@
 ---
 
-- name: Debian | reset sources.list (<v8)
+- name: Debian | reset sources.list (<=v8)
   template:
     src: "debian/sources.list.archive.j2"
     dest: "/etc/apt/sources.list"
     owner: root
     group: root
     mode: 0644
-  when: ansible_distribution_major_version|int < 8
+  when: ansible_distribution_major_version|int <= 8
   notify:
   - Debian | update package cache
-
-- name: Debian | reset sources.list (=v8)
-  template:
-    src: "debian/sources.list.jessie.j2"
-    dest: "/etc/apt/sources.list"
-    owner: root
-    group: root
-    mode: 0644
-  when: ansible_distribution_major_version|int == 8
-  notify:
-  - Debian | update package cache
-
 
 - name: Debian | reset sources.list (>v8)
   template:
