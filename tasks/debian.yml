@@ -53,7 +53,7 @@
 
   - name: Debian | add backports repo (>v8)
     copy:
-      content: "deb http://ftp.debian.org/debian/ {{ ansible_lsb.codename }}-backports main contrib non-free"
+      content: "deb https://deb.debian.org/debian {{ ansible_lsb.codename }}-backports main contrib non-free"
       dest: "/etc/apt/sources.list.d/backports.list"
       owner: root
       group: root
