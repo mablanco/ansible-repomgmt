@@ -13,13 +13,25 @@
     notify:
     - Debian | update package cache
 
-  - name: Debian | reset sources.list (<=v8)
+  - name: Debian | reset sources.list (<=v7)
     template:
       src: "debian/sources.list.archive.j2"
       dest: "/etc/apt/sources.list"
       owner: root
       group: root
       mode: 0644
+    when: ansible_distribution_major_version|int <= 7
+    notify:
+    - Debian | update package cache
+
+  - name: Debian | reset sources.list (==v8)
+    template:
+      src: "debian/sources.list.oldoldstable.j2"
+      dest: "/etc/apt/sources.list"
+      owner: root
+      group: root
+      mode: 0644
+    when: ansible_distribution_major_version|int == 8
     notify:
     - Debian | update package cache
 
@@ -34,17 +46,6 @@
     - Debian | update package cache
 
   when: ansible_distribution_major_version|int <= 8
-
-- name: Debian | reset sources.list for v8
-  template:
-    src: "debian/sources.list.current.j2"
-    dest: "/etc/apt/sources.list"
-    owner: root
-    group: root
-    mode: 0644
-  when: ansible_distribution_major_version|int == 8
-  notify:
-  - Debian | update package cache
 
 - name: Debian | current versions (from 9 on)
   block:
