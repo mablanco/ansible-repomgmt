@@ -3,6 +3,7 @@
 - name: Debian | install mariadb repo key
   apt_key:
     url: "https://mariadb.org/mariadb_release_signing_key.asc"
+    validate_certs: false
     state: present
 
 - name: Debian | add mariadb 10.3 repo
