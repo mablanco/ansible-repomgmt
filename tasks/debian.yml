@@ -93,13 +93,13 @@
 
 - name: Debian | Multimedia repo
   include: debian_multimedia.yml
-  when: debian_multimedia and ansible_distribution_major_version|int >= 7
+  when: debian_multimedia and ansible_distribution_major_version|int >= 8
 
 - name: Debian | Dotdeb repo
   include: debian_dotdeb.yml
   when: debian_dotdeb and ansible_distribution_major_version|int >= 7
-
-- name: Debian | Nginx repo
+  
+  - name: Debian | Nginx repo
   include: debian_nginx.yml
   when: debian_nginx and ansible_distribution_major_version|int >= 7
 
