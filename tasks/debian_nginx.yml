@@ -1,7 +1,9 @@
 ---
 
 - name: Debian | add nginx repo key
-  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  apt_key:
+    url: "http://nginx.org/keys/nginx_signing.key"
+    state: present
 
 - name: Debian | add nginx repo
   copy:

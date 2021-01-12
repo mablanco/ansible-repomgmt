@@ -1,7 +1,10 @@
 ---
 
 - name: Debian | install multimedia repo key
-  apt_key: keyserver=keyserver.ubuntu.com id=5C808C2B65558117
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 5C808C2B65558117
+    state: present
 
 - name: Debian | add multimedia repo
   template:
