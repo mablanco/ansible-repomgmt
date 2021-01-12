@@ -1,6 +1,6 @@
 ---
 
-- name: Debian | versions up to 8
+- name: Debian | archived versions (up to 8)
   block:
 
   - name: Debian | disable validity checks (<=v8)
@@ -23,16 +23,30 @@
     notify:
     - Debian | update package cache
 
-  - name: Debian | remove backports repo (<=v8)
-    file:
-      path: "/etc/apt/sources.list.d/backports.list"
-      state: absent
+  - name: Debian | add backports repo (<=v8)
+    copy:
+      content: "deb http://archive.debian.org/debian {{ ansible_lsb.codename }}-backports main contrib non-free\ndeb http://archive.debian.org/debian {{ ansible_lsb.codename }}-backports-sloppy main contrib non-free\n"
+      dest: "/etc/apt/sources.list.d/backports.list"
+      owner: root
+      group: root
+      mode: 0644
     notify:
     - Debian | update package cache
 
   when: ansible_distribution_major_version|int <= 8
 
-- name: Debian | versions higher than 8
+- name: Debian | reset sources.list for v8
+  template:
+    src: "debian/sources.list.current.j2"
+    dest: "/etc/apt/sources.list"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution_major_version|int == 8
+  notify:
+  - Debian | update package cache
+
+- name: Debian | current versions (from 9 on)
   block:
 
   - name: Debian | install APT HTTPS support
@@ -41,7 +55,7 @@
       - apt-transport-https
       state: present
 
-  - name: Debian | reset sources.list (>v8)
+  - name: Debian | reset sources.list (>=v9)
     template:
       src: "debian/sources.list.current.j2"
       dest: "/etc/apt/sources.list"
@@ -51,7 +65,7 @@
     notify:
     - Debian | update package cache
 
-  - name: Debian | add backports repo (>v8)
+  - name: Debian | add backports repo (>=v9)
     copy:
       content: "deb https://deb.debian.org/debian {{ ansible_lsb.codename }}-backports main contrib non-free"
       dest: "/etc/apt/sources.list.d/backports.list"
@@ -61,7 +75,7 @@
     notify:
     - Debian | update package cache
 
-  when: ansible_distribution_major_version|int > 8
+  when: ansible_distribution_major_version|int >= 9
 
 - name: Debian | install official repos keys
   apt:
