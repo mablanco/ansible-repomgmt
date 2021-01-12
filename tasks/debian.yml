@@ -50,12 +50,6 @@
 - name: Debian | current versions (from 9 on)
   block:
 
-  - name: Debian | install APT HTTPS support
-    apt:
-      name:
-      - apt-transport-https
-      state: present
-
   - name: Debian | reset sources.list (>=v9)
     template:
       src: "debian/sources.list.current.j2"
@@ -77,6 +71,14 @@
     - Debian | update package cache
 
   when: ansible_distribution_major_version|int >= 9
+
+- name: Debian | install APT HTTPS support
+  apt:
+    name:
+    - apt-transport-https
+    allow_unauthenticated: yes
+    update_cache: yes
+    state: present
 
 - name: Debian | install official repos keys
   apt:
