@@ -5,10 +5,10 @@
     url: "https://mariadb.org/mariadb_release_signing_key.asc"
     state: present
 
-- name: Debian | add mariadb 10.4 repo
+- name: Debian | add mariadb 10.3 repo
   copy:
-    content: "deb http://mirror.netcologne.de/mariadb/repo/10.4/debian {{ ansible_lsb.codename }} main"
-    dest: "/etc/apt/sources.list.d/mariadb104.list"
+    content: "deb http://mirror.netcologne.de/mariadb/repo/10.3/debian {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb103.list"
   when: ansible_lsb.codename in [ "wheezy" ]
   notify:
   - Debian | update package cache
