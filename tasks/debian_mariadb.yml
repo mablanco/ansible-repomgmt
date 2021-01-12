@@ -17,6 +17,6 @@
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.5/debian {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb105.list"
-    when: debian_multimedia and ansible_distribution_major_version|int >= 8
+  when: debian_multimedia and ansible_distribution_major_version|int >= 8
   notify:
   - Debian | update package cache
