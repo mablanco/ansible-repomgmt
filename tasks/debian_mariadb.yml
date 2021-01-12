@@ -16,24 +16,9 @@
   notify:
   - Debian | update package cache
 
-- name: Debian | add mariadb 10.0 repo
+- name: Debian | add mariadb 10.5 repo
   copy:
-    content: "deb http://mirror.netcologne.de/mariadb/repo/10.0/debian {{ ansible_lsb.codename }} main"
-    dest: "/etc/apt/sources.list.d/mariadb100.list"
-  when: ansible_lsb.codename in [ "wheezy", "jessie" ]
-  notify:
-  - Debian | update package cache
-
-- name: Debian | add mariadb 10.1 repo
-  copy:
-    content: "deb http://mirror.netcologne.de/mariadb/repo/10.1/debian {{ ansible_lsb.codename }} main"
-    dest: "/etc/apt/sources.list.d/mariadb101.list"
-  notify:
-  - Debian | update package cache
-
-- name: Debian | add mariadb 10.2 repo
-  copy:
-    content: "deb http://mirror.netcologne.de/mariadb/repo/10.2/debian {{ ansible_lsb.codename }} main"
-    dest: "/etc/apt/sources.list.d/mariadb102.list"
+    content: "deb http://mirror.netcologne.de/mariadb/repo/10.5/debian {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb105.list"
   notify:
   - Debian | update package cache
