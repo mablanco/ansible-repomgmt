@@ -2,11 +2,14 @@ galaxy_info:
   author: Marco Antonio Blanco
   description: Management of several popular Linux distributions' software repositories
   license: GPLv3
-  min_ansible_version: 2.2
+  min_ansible_version: 2.7
   platforms:
   - name: Debian
     versions:
-    - all
+    - 7
+    - 8
+    - 9
+    - 10
   - name: Ubuntu
     versions:
     - trusty
