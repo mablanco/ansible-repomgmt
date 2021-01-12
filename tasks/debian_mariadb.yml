@@ -1,12 +1,9 @@
 ---
 
-- name: Debian | install mariadb old repo key
-  apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
-  when: ansible_lsb.codename in [ "wheezy", "jessie" ]
-
-- name: Debian | install mariadb new repo key
-  apt_key: keyserver=keyserver.ubuntu.com id=0xF1656F24C74CD1D8
-  when: ansible_lsb.codename in [ "stretch", "buster" ]
+- name: Debian | install mariadb repo key
+  apt_key:
+    url: "https://mariadb.org/mariadb_release_signing_key.asc"
+    state: present
 
 - name: Debian | add mariadb 10.4 repo
   copy:
