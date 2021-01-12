@@ -6,10 +6,10 @@ galaxy_info:
   platforms:
   - name: Debian
     versions:
-    - 7
-    - 8
-    - 9
-    - 10
+    - wheezy
+    - jessie
+    - stretch
+    - buster
   - name: Ubuntu
     versions:
     - trusty
