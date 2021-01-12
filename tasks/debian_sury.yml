@@ -1,0 +1,17 @@
+---
+
+- name: Debian | add sury repo key
+  apt_key:
+    url: "https://packages.sury.org/php/apt.gpg"
+    validate_certs: false
+    state: present
+
+- name: Debian | add sury repo
+  copy:
+    content: "deb https://packages.sury.org/php/ {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/sury.list"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - Debian | update package cache

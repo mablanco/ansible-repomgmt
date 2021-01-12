@@ -10,10 +10,11 @@ Ansible role to manage the software repositories of a Linux system of the follow
 The following variables control whether an extra repo is installed (*true*) or not (*false*).
 
 #### Debian
-- **debian_multimedia**
-- **debian_dotdeb**
-- **debian_nginx**
+- **debian_dotdeb** (Debian <= 8)
 - **debian_mariadb**
+- **debian_multimedia** (Debian >= 8)
+- **debian_nginx**
+- **debian_sury** (Debian >= 9)
 
 #### Ubuntu
 - **ubuntu_universe**
@@ -45,7 +46,7 @@ Example of how to use this role:
     - hosts: debian_servers
       vars:
          debian_nginx: true
-         debian_dotdeb: true
+         debian_sury: true
       roles:
          - { role: mablanco.repomgmt }
 
