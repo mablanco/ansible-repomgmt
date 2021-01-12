@@ -8,10 +8,10 @@
   apt_key: keyserver=keyserver.ubuntu.com id=0xF1656F24C74CD1D8
   when: ansible_lsb.codename in [ "stretch", "buster" ]
 
-- name: Debian | add mariadb 5.5 repo
+- name: Debian | add mariadb 10.4 repo
   copy:
-    content: "deb http://mirror.netcologne.de/mariadb/repo/5.5/debian {{ ansible_lsb.codename }} main"
-    dest: "/etc/apt/sources.list.d/mariadb55.list"
+    content: "deb http://mirror.netcologne.de/mariadb/repo/10.4/debian {{ ansible_lsb.codename }} main"
+    dest: "/etc/apt/sources.list.d/mariadb104.list"
   when: ansible_lsb.codename in [ "wheezy" ]
   notify:
   - Debian | update package cache
@@ -20,5 +20,6 @@
   copy:
     content: "deb http://mirror.netcologne.de/mariadb/repo/10.5/debian {{ ansible_lsb.codename }} main"
     dest: "/etc/apt/sources.list.d/mariadb105.list"
+    when: debian_multimedia and ansible_distribution_major_version|int >= 8
   notify:
   - Debian | update package cache
