@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+Types: deb
+URIs: {{ repomgmt_debian_mirror }}
+Suites: {{ ansible_facts['distribution_release'] }} {{ ansible_facts['distribution_release'] }}-updates{% if repomgmt_debian_backports %} {{ ansible_facts['distribution_release'] }}-backports{% endif %}
+
+Components: {{ repomgmt_debian_components | join(' ') }}
+Signed-By: {{ repomgmt_debian_keyring }}
+
+Types: deb
+URIs: {{ repomgmt_debian_security_mirror }}
+Suites: {{ ansible_facts['distribution_release'] }}-security
+Components: {{ repomgmt_debian_components | join(' ') }}
+Signed-By: {{ repomgmt_debian_keyring }}

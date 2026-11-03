@@ -1,25 +1,26 @@
 ---
-# tasks file for mablanco.repomgmt
+- name: Repos | Check the platform
+  ansible.builtin.assert:
+    that: >-
+      ansible_facts['distribution'] in ['Debian', 'Ubuntu', 'Fedora']
+      or ansible_facts['os_family'] in ['RedHat', 'Suse']
+    fail_msg: "The role does not support {{ ansible_facts['distribution'] }}."
+    quiet: true
 
-- name: echo info message
-  debug: msg="Installing repos for a {{ ansible_distribution }} ({{ ansible_distribution_version }}) distro"
+- name: Repos | Manage the repositories (Debian and Ubuntu)
+  ansible.builtin.include_tasks: apt.yml
+  when: ansible_facts['os_family'] == 'Debian'
 
-- name: repos for Debian
-  include: debian.yml
-  when: ansible_distribution == "Debian"
+- name: Repos | Manage the repositories (EL)
+  ansible.builtin.include_tasks: el.yml
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+    - ansible_facts['distribution'] != 'Fedora'
 
-- name: repos for Ubuntu
-  include: ubuntu.yml
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 12
+- name: Repos | Manage the repositories (Fedora)
+  ansible.builtin.include_tasks: fedora.yml
+  when: ansible_facts['distribution'] == 'Fedora'
 
-- name: repos for RedHat family
-  include: redhat.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution != "Fedora" and ansible_distribution_major_version|int >= 6
-
-- name: repos for Fedora
-  include: fedora.yml
-  when: ansible_distribution == "Fedora" and ansible_distribution_major_version|int >= 25
-
-- name: repos for SLES
-  include: sles.yml
-  when: ansible_distribution == "SLES" and ansible_distribution_major_version|int >= 11
+- name: Repos | Manage the repositories (openSUSE)
+  ansible.builtin.include_tasks: suse.yml
+  when: ansible_facts['os_family'] == 'Suse'

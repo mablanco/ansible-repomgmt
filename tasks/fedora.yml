@@ -1,17 +1,28 @@
 ---
+- name: Repos | Import Remi's key
+  ansible.builtin.rpm_key:
+    key: "https://rpms.remirepo.net/fedora/{{ ansible_facts['distribution_major_version'] }}/RPM-GPG-KEY-remi"
+    state: present
+  when: repomgmt_remi
 
-- name: Fedora | REMI repo
-  dnf: name="http://rpms.famillecollet.com/fedora/remi-release-{{ ansible_distribution_major_version }}.rpm" state=present
-  when: rhel_remi
+- name: Repos | Install remi-release
+  ansible.builtin.dnf:
+    name: "https://rpms.remirepo.net/fedora/remi-release-{{ ansible_facts['distribution_major_version'] }}.rpm"
+    state: present
+  when: repomgmt_remi
 
-- name: Fedora | enable REMI repo
-  command: dnf config-manager --set-enabled remi
-  when: rhel_remi
+# Fedora's RPM Fusion keys are not per release: the 2020 one signs them all
+- name: Repos | Import RPM Fusion's keys
+  ansible.builtin.rpm_key:
+    key: "https://download1.rpmfusion.org/{{ item }}/fedora/RPM-GPG-KEY-rpmfusion-{{ item }}-fedora-2020"
+    state: present
+  loop: [free, nonfree]
+  when: repomgmt_rpmfusion
 
-- name: Fedora | RPM Fusion repo (free)
-  dnf: name="https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
-  when: rhel_rpmfusion
-
-- name: Fedora | RPM Fusion repo (non-free)
-  dnf: name="https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm" state=present
-  when: rhel_rpmfusion
+- name: Repos | Install RPM Fusion's release packages
+  ansible.builtin.dnf:
+    name:
+      - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+      - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+    state: present
+  when: repomgmt_rpmfusion

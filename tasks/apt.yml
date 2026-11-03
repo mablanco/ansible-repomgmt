@@ -1,0 +1,149 @@
+---
+- name: Repos | Remove the files of older versions of this role
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ repomgmt_legacy_apt_files | map('regex_replace', '^', '/etc/apt/sources.list.d/') + ['/etc/apt/apt.conf.d/100disablechecks'] }}"
+  notify: Update the APT cache
+
+# The repositories that this role now writes as deb822 files, which would
+# conflict with the old ones
+- name: Repos | Remove the old files of the repositories that the role manages
+  ansible.builtin.file:
+    path: "/etc/apt/sources.list.d/{{ item.file }}"
+    state: absent
+  loop:
+    - {file: backports.list, when: "{{ repomgmt_manage_base }}"}
+    - {file: ubuntu-backports.list, when: "{{ repomgmt_manage_base }}"}
+    - {file: ubuntu-multiverse.list, when: "{{ repomgmt_manage_base }}"}
+    - {file: ubuntu-universe.list, when: "{{ repomgmt_manage_base }}"}
+    - {file: multimedia.list, when: "{{ repomgmt_deb_multimedia }}"}
+    - {file: nginx.list, when: "{{ repomgmt_nginx }}"}
+    - {file: sury.list, when: "{{ repomgmt_sury }}"}
+  loop_control:
+    label: "{{ item.file }}"
+  when: item.when | bool
+  notify: Update the APT cache
+
+- name: Repos | Manage the base repositories
+  when: repomgmt_manage_base
+  block:
+    - name: Repos | Write the base repositories
+      ansible.builtin.template:
+        src: "{{ ansible_facts['distribution'] | lower }}.sources.j2"
+        dest: "/etc/apt/sources.list.d/{{ ansible_facts['distribution'] | lower }}.sources"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Update the APT cache
+
+    - name: Repos | Empty sources.list
+      ansible.builtin.copy:
+        content: |
+          # Managed by Ansible
+          # The repositories are in /etc/apt/sources.list.d/{{ ansible_facts['distribution'] | lower }}.sources
+        dest: /etc/apt/sources.list
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Update the APT cache
+
+- name: Repos | Update the APT cache before installing the requirements
+  ansible.builtin.meta: flush_handlers
+
+- name: Repos | Create the keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Repos | Install the requirements of deb822_repository
+  ansible.builtin.apt:
+    name: python3-debian
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  when: repomgmt_deb_multimedia or repomgmt_nginx or repomgmt_mariadb or repomgmt_sury
+
+# The keyserver's answer changes with the server that sends it, so the role
+# downloads these keys only when they are missing, instead of passing their
+# URL to signed_by. get_url downloads again even with force: false.
+- name: Repos | Check the keys from the keyserver
+  ansible.builtin.stat:
+    path: "/etc/apt/keyrings/{{ item.name }}.asc"
+  register: repomgmt_keyserver_keys
+  loop: "{{ repomgmt_keyserver_repos | selectattr('enabled') }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Repos | Download the missing keys from the keyserver
+  ansible.builtin.get_url:
+    url: "{{ repomgmt_keyserver }}{{ item.item.fingerprint }}"
+    dest: "/etc/apt/keyrings/{{ item.item.name }}.asc"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: "{{ repomgmt_keyserver_keys.results | rejectattr('stat.exists') }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+
+- name: Repos | Add deb-multimedia
+  ansible.builtin.deb822_repository:
+    name: deb-multimedia
+    uris: https://www.deb-multimedia.org
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: [main, non-free]
+    signed_by: /etc/apt/keyrings/deb-multimedia.asc
+  when:
+    - repomgmt_deb_multimedia
+    - ansible_facts['distribution'] == 'Debian'
+  notify: Update the APT cache
+
+- name: Repos | Add nginx.org
+  ansible.builtin.deb822_repository:
+    name: nginx
+    uris: "https://nginx.org/packages/{{ ansible_facts['distribution'] | lower }}"
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: nginx
+    signed_by: https://nginx.org/keys/nginx_signing.key
+  when: repomgmt_nginx
+  notify: Update the APT cache
+
+- name: Repos | Add MariaDB
+  ansible.builtin.deb822_repository:
+    name: mariadb
+    uris: "https://dlm.mariadb.com/repo/mariadb-server/{{ repomgmt_mariadb_version }}/repo/{{ ansible_facts['distribution'] | lower }}"
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    signed_by: https://mariadb.org/mariadb_release_signing_key.pgp
+  when: repomgmt_mariadb
+  notify: Update the APT cache
+
+- name: Repos | Add Sury's PHP repository (Debian)
+  ansible.builtin.deb822_repository:
+    name: sury-php
+    uris: https://packages.sury.org/php
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    signed_by: https://packages.sury.org/php/apt.gpg
+  when:
+    - repomgmt_sury
+    - ansible_facts['distribution'] == 'Debian'
+  notify: Update the APT cache
+
+- name: Repos | Add Sury's PHP repository (Ubuntu)
+  ansible.builtin.deb822_repository:
+    name: sury-php
+    uris: https://ppa.launchpadcontent.net/ondrej/php/ubuntu
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: main
+    signed_by: /etc/apt/keyrings/sury-php.asc
+  when:
+    - repomgmt_sury
+    - ansible_facts['distribution'] == 'Ubuntu'
+  notify: Update the APT cache
+
+- name: Repos | Update the APT cache
+  ansible.builtin.meta: flush_handlers

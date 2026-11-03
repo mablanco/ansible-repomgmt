@@ -1,0 +1,26 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    # The minimal container images lack Python, which Ansible needs, and
+    # Fedora's lack the DNF 5 bindings. EL images already have both.
+    - name: Install Python
+      ansible.builtin.raw: >-
+        if command -v apt-get; then command -v python3 || (apt-get update && apt-get install -y python3);
+        elif command -v zypper; then command -v python3 || zypper --non-interactive install python3;
+        elif command -v dnf5; then rpm -q python3-libdnf5 || dnf5 install -y python3 python3-libdnf5;
+        fi
+      register: prepare_python
+      changed_when: "'python3' not in prepare_python.stdout"
+
+    # Files of older versions of the role, for repositories that no longer
+    # exist, which break apt-get update
+    - name: Add the APT files of older versions of the role
+      ansible.builtin.raw: >-
+        if command -v apt-get; then
+        . /etc/os-release;
+        echo "deb http://packages.dotdeb.org $VERSION_CODENAME all" > /etc/apt/sources.list.d/dotdeb.list;
+        echo "deb http://nginx.org/packages/$ID/ $VERSION_CODENAME nginx" > /etc/apt/sources.list.d/nginx.list;
+        echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/100disablechecks; fi
+      changed_when: true

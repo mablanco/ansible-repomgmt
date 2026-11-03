@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+Types: deb
+URIs: {{ repomgmt_ubuntu_mirror }}
+Suites: {{ ansible_facts['distribution_release'] }} {{ ansible_facts['distribution_release'] }}-updates{% if repomgmt_ubuntu_backports %} {{ ansible_facts['distribution_release'] }}-backports{% endif %}
+
+Components: {{ repomgmt_ubuntu_components | join(' ') }}
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb
+URIs: {{ repomgmt_ubuntu_security_mirror }}
+Suites: {{ ansible_facts['distribution_release'] }}-security
+Components: {{ repomgmt_ubuntu_components | join(' ') }}
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
