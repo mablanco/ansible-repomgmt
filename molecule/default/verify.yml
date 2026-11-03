@@ -1,0 +1,108 @@
+---
+- name: Verify (Debian and Ubuntu)
+  hosts: all
+  tasks:
+    - name: Check the repositories
+      when: ansible_facts['os_family'] == 'Debian'
+      block:
+        - name: Update the APT cache
+          # The apt module hides apt-get's warnings, which this test checks
+          ansible.builtin.command: apt-get update  # noqa: command-instead-of-module
+          register: verify_update
+          changed_when: false
+          # Any warning, such as a repository configured twice, fails, but
+          # the one about the ondrej/php PPA's key, which is RSA 1024
+          failed_when: >-
+            verify_update.rc != 0
+            or verify_update.stderr_lines
+               | reject('search', 'ondrej/php.*uses weak algorithm \\(rsa1024\\)')
+               | length > 0
+
+        - name: Read the package sources
+          ansible.builtin.command: apt-cache policy
+          register: verify_policy
+          changed_when: false
+
+        - name: Check that every repository is enabled
+          ansible.builtin.assert:
+            that: item in verify_policy.stdout
+            quiet: true
+          loop: "{{ verify_expected }}"
+          vars:
+            verify_codename: "{{ ansible_facts['distribution_release'] }}"
+            verify_expected: >-
+              {{ (['deb-multimedia.org', 'packages.sury.org', verify_codename ~ '-backports/non-free-firmware']
+                  if ansible_facts['distribution'] == 'Debian' else
+                  [verify_codename ~ '-backports/universe']
+                  + (['ppa.launchpadcontent.net/ondrej/php'] if verify_codename != 'resolute' else []))
+                 + ['nginx.org/packages', 'dlm.mariadb.com'] }}
+
+        - name: Read sources.list
+          ansible.builtin.slurp:
+            src: /etc/apt/sources.list
+          register: verify_sources_list
+
+        - name: Check that sources.list has no repositories
+          ansible.builtin.assert:
+            that: verify_sources_list.content | b64decode is not search('^deb ', multiline=True)
+            quiet: true
+
+        - name: Check the files of older versions of the role
+          ansible.builtin.stat:
+            path: "{{ item }}"
+          register: verify_legacy
+          loop:
+            - /etc/apt/sources.list.d/dotdeb.list
+            - /etc/apt/sources.list.d/nginx.list
+            - /etc/apt/apt.conf.d/100disablechecks
+
+        - name: Check that the files of older versions of the role are gone
+          ansible.builtin.assert:
+            that: not item.stat.exists
+            quiet: true
+          loop: "{{ verify_legacy.results }}"
+          loop_control:
+            label: "{{ item.item }}"
+
+- name: Verify (EL and Fedora)
+  hosts: all
+  tasks:
+    - name: Check the repositories
+      when: ansible_facts['os_family'] == 'RedHat'
+      block:
+        - name: List the enabled repositories
+          ansible.builtin.command: dnf repolist --enabled
+          register: verify_repolist
+          changed_when: false
+
+        - name: Check that every repository is enabled
+          ansible.builtin.assert:
+            that: item in verify_repolist.stdout
+            quiet: true
+          loop: >-
+            {{ ['remi', 'rpmfusion-free', 'rpmfusion-nonfree']
+               + ([] if ansible_facts['distribution'] == 'Fedora' else ['epel', 'crb']) }}
+
+        - name: Download the metadata of every repository
+          ansible.builtin.command: dnf makecache
+          changed_when: false
+
+- name: Verify (openSUSE)
+  hosts: all
+  tasks:
+    - name: Check the repositories
+      when: ansible_facts['os_family'] == 'Suse'
+      block:
+        - name: List the repositories
+          ansible.builtin.command: zypper --non-interactive lr --details
+          register: verify_repos
+          changed_when: false
+
+        - name: Check that Packman is enabled with its priority
+          ansible.builtin.assert:
+            that: verify_repos.stdout is search('packman\s*\|\s*Packman\s*\|\s*Yes.*\|\s*90\s*\|')
+            fail_msg: "{{ verify_repos.stdout }}"
+
+        - name: Refresh every repository
+          ansible.builtin.command: zypper --non-interactive --gpg-auto-import-keys refresh
+          changed_when: false

@@ -1,2 +1,35 @@
 ---
-# vars file for mablanco.repomgmt
+# Ubuntu publishes architectures other than amd64 and i386 on ports.ubuntu.com
+repomgmt_ubuntu_ports: "{{ ansible_facts['architecture'] not in ['x86_64', 'i386'] }}"
+repomgmt_ubuntu_default_mirror: >-
+  {{ 'http://ports.ubuntu.com/ubuntu-ports' if repomgmt_ubuntu_ports else 'http://archive.ubuntu.com/ubuntu' }}
+repomgmt_ubuntu_default_security_mirror: >-
+  {{ 'http://ports.ubuntu.com/ubuntu-ports' if repomgmt_ubuntu_ports else 'http://security.ubuntu.com/ubuntu' }}
+
+# Files that older versions of this role created in /etc/apt/sources.list.d,
+# for repositories that no longer exist or releases that are no longer
+# supported. They break apt-get update.
+repomgmt_legacy_apt_files:
+  - dotdeb.list
+  - mariadb55.list
+  - mariadb100.list
+  - mariadb101.list
+  - mariadb102.list
+  - mariadb103.list
+  - mariadb105.list
+  - ubuntu-partners.list
+
+# Where the role fetches the keys that their repositories do not publish
+repomgmt_keyserver: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x"
+repomgmt_keyserver_repos:
+  - name: deb-multimedia
+    fingerprint: A401FF99368FA1F98152DE755C808C2B65558117
+    enabled: "{{ repomgmt_deb_multimedia and ansible_facts['distribution'] == 'Debian' }}"
+  - name: sury-php
+    fingerprint: 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C
+    enabled: "{{ repomgmt_sury and ansible_facts['distribution'] == 'Ubuntu' }}"
+
+# Debian 13 ships its keyring in the .pgp format, and keeps the .gpg one for
+# compatibility
+repomgmt_debian_keyring: >-
+  /usr/share/keyrings/debian-archive-keyring.{{ 'pgp' if ansible_facts['distribution_major_version'] | int >= 13 else 'gpg' }}

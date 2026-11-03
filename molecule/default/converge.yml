@@ -1,0 +1,20 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    repomgmt_manage_base: true
+    repomgmt_debian_components: [main, contrib, non-free, non-free-firmware]
+    repomgmt_debian_backports: true
+    repomgmt_deb_multimedia: true
+    repomgmt_nginx: true
+    repomgmt_mariadb: true
+    # The ondrej/php PPA has no packages for Ubuntu 26.04 yet
+    repomgmt_sury: "{{ ansible_facts['distribution_release'] != 'resolute' }}"
+    repomgmt_epel: true
+    repomgmt_remi: true
+    repomgmt_rpmfusion: true
+    repomgmt_packman: true
+  tasks:
+    - name: Run the role
+      ansible.builtin.include_role:
+        name: "{{ lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"

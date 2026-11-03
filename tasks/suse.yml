@@ -1,0 +1,14 @@
+---
+- name: Repos | Add Packman
+  community.general.zypper_repository:
+    name: packman
+    description: Packman
+    repo: "https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_{{ ansible_facts['distribution_version'] }}/"
+    # Above the distribution's repositories (99), as Packman recommends
+    priority: 90
+    auto_import_keys: true
+    runrefresh: true
+    state: present
+  when:
+    - repomgmt_packman
+    - ansible_facts['distribution'] == 'openSUSE Leap'

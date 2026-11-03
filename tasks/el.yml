@@ -1,0 +1,63 @@
+---
+- name: Repos | Add EPEL
+  when: repomgmt_epel or repomgmt_remi or repomgmt_rpmfusion
+  block:
+    # Rocky Linux, AlmaLinux and others ship epel-release in their extras
+    - name: Repos | Install epel-release
+      ansible.builtin.dnf:
+        name: epel-release
+        state: present
+      when: ansible_facts['distribution'] != 'RedHat'
+
+    - name: Repos | Import EPEL's key (RHEL)
+      ansible.builtin.rpm_key:
+        key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_facts['distribution_major_version'] }}"
+        state: present
+      when: ansible_facts['distribution'] == 'RedHat'
+
+    - name: Repos | Install epel-release (RHEL)
+      ansible.builtin.dnf:
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+        state: present
+      when: ansible_facts['distribution'] == 'RedHat'
+
+    # EPEL packages depend on CRB. On RHEL it is a subscription repository,
+    # codeready-builder-for-rhel-*, which subscription-manager enables.
+    - name: Repos | Install the DNF plugins
+      ansible.builtin.dnf:
+        name: dnf-plugins-core
+        state: present
+      when: ansible_facts['distribution'] != 'RedHat'
+
+    - name: Repos | Enable CRB
+      community.general.dnf_config_manager:
+        name: crb
+        state: enabled
+      when: ansible_facts['distribution'] != 'RedHat'
+
+- name: Repos | Import Remi's key
+  ansible.builtin.rpm_key:
+    key: "https://rpms.remirepo.net/enterprise/{{ ansible_facts['distribution_major_version'] }}/RPM-GPG-KEY-remi"
+    state: present
+  when: repomgmt_remi
+
+- name: Repos | Install remi-release
+  ansible.builtin.dnf:
+    name: "https://rpms.remirepo.net/enterprise/remi-release-{{ ansible_facts['distribution_major_version'] }}.rpm"
+    state: present
+  when: repomgmt_remi
+
+- name: Repos | Import RPM Fusion's keys
+  ansible.builtin.rpm_key:
+    key: "https://download1.rpmfusion.org/{{ item }}/el/RPM-GPG-KEY-rpmfusion-{{ item }}-el-{{ ansible_facts['distribution_major_version'] }}"
+    state: present
+  loop: [free, nonfree]
+  when: repomgmt_rpmfusion
+
+- name: Repos | Install RPM Fusion's release packages
+  ansible.builtin.dnf:
+    name:
+      - "https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+      - "https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-{{ ansible_facts['distribution_major_version'] }}.noarch.rpm"
+    state: present
+  when: repomgmt_rpmfusion

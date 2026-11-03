@@ -1,27 +1,39 @@
 ---
-# defaults file for mablanco.repomgmt
+# Base repositories of Debian and Ubuntu. The role leaves them alone unless
+# this is true, and then writes debian.sources or ubuntu.sources and empties
+# /etc/apt/sources.list.
+repomgmt_manage_base: false
 
-# Debian extras
-debian_multimedia: false
-debian_dotdeb: false
-debian_nginx: false
-debian_mariadb: false
+repomgmt_debian_mirror: http://deb.debian.org/debian
+repomgmt_debian_security_mirror: http://deb.debian.org/debian-security
+repomgmt_debian_components:
+  - main
+  - non-free-firmware
+repomgmt_debian_backports: false
 
-# Ubuntu extras
-ubuntu_universe: false
-ubuntu_multiverse: false
-ubuntu_backports: false
-ubuntu_partners: false
-ubuntu_nginx: false
-ubuntu_mariadb: false
+repomgmt_ubuntu_mirror: "{{ repomgmt_ubuntu_default_mirror }}"
+repomgmt_ubuntu_security_mirror: "{{ repomgmt_ubuntu_default_security_mirror }}"
+repomgmt_ubuntu_components:
+  - main
+  - restricted
+  - universe
+  - multiverse
+repomgmt_ubuntu_backports: true
 
-# RedHat extras
-rhel_epel: false
-rhel_remi: false
-rhel_rpmfusion: false
-rhel_nux: false
-rhel_nux_misc: false
-rhel_ius: false
+# Extra repositories. Each one applies only to the platforms that it supports.
 
-# SLES extras
-sles_packman: false
+# Debian
+repomgmt_deb_multimedia: false
+# Debian and Ubuntu
+repomgmt_nginx: false
+repomgmt_mariadb: false
+repomgmt_mariadb_version: "11.8"
+# Debian, and Ubuntu with the ondrej/php PPA
+repomgmt_sury: false
+# EL
+repomgmt_epel: false
+# EL and Fedora. Remi and RPM Fusion need EPEL on EL, so they add it.
+repomgmt_remi: false
+repomgmt_rpmfusion: false
+# openSUSE Leap
+repomgmt_packman: false

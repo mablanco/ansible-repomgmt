@@ -1,35 +1,38 @@
+---
 galaxy_info:
+  role_name: repomgmt
+  namespace: mablanco
   author: Marco Antonio Blanco
-  description: Management of several popular Linux distributions' software repositories
-  license: GPLv3
-  min_ansible_version: 2.7
+  description: Manage the base and extra software repositories of several Linux distributions
+  license: GPL-3.0-only
+  min_ansible_version: "2.17"
+
   platforms:
-  - name: Debian
-    versions:
-    - wheezy
-    - jessie
-    - stretch
-    - buster
-  - name: Ubuntu
-    versions:
-    - trusty
-    - xenial
-    - zesty
-  - name: EL
-    versions:
-    - 6
-    - 7
-  - name: Fedora
-    versions:
-    - 25
-    - 26
-  - name: SLES
-    versions:
-    - all
+    - name: Debian
+      versions:
+        - bookworm
+        - trixie
+    - name: Ubuntu
+      versions:
+        - noble
+        - resolute
+    - name: EL
+      versions:
+        - "9"
+        - "10"
+    # Galaxy's schema has no recent Fedora or openSUSE versions. Tested on
+    # Fedora 43 and 44 and openSUSE Leap 16.0.
+    - name: Fedora
+      versions:
+        - all
+    - name: opensuse
+      versions:
+        - all
 
   galaxy_tags:
     - packaging
-    - linux
-    - system
+    - repositories
+    - apt
+    - dnf
 
 dependencies: []
